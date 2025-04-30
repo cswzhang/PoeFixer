@@ -130,4 +130,10 @@ public partial class MainWindow : Window
         sw.Stop();
         EmitToConsole($"GGPK patched in {(int)sw.Elapsed.TotalMilliseconds}ms.");
     }
+
+    private void OnEditColorMods(object sender, RoutedEventArgs e)
+    {
+        var editor = new ColorModEditor("color_mods.json");
+        editor.ShowDialog();
+    }
 }

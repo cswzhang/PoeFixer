@@ -1,0 +1,137 @@
+<Window x:Class="PoeFixer.ColorModEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PoeFixer"
+        mc:Ignorable="d"
+        Title="Color Mod Editor" Height="600" Width="800"
+        Background="#F5F5F5"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="Color Mod Editor" FontSize="24" Margin="0,0,0,20" Grid.ColumnSpan="2"/>
+
+        <!-- DataGrid for mod mappings -->
+        <DataGrid Grid.Row="1" x:Name="ModMappingsGrid" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="True"
+                  CanUserDeleteRows="True"
+                  Margin="0,0,20,20">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Remove Selected" 
+                             InputGestureText="Delete"
+                             Click="OnRemoveSelectedClick">
+                        <MenuItem.Icon>
+                            <TextBlock Text="-" FontWeight="Bold"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mod Type" Binding="{Binding ModType}" Width="2*"/>
+                <DataGridTextColumn Header="Color" Binding="{Binding ColorName}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Search Panel -->
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Search Box -->
+            <DockPanel Margin="0,0,0,10">
+                <Button Content="Search" DockPanel.Dock="Right" Click="OnSearchClick" Margin="5,0,0,0" Padding="10,2"/>
+                <TextBox x:Name="SearchBox" KeyDown="OnSearchBoxKeyDown"/>
+            </DockPanel>
+
+            <!-- Search Results -->
+            <ListBox Grid.Row="1" x:Name="SearchResults" 
+                     MouseDoubleClick="OnSearchResultDoubleClick"
+                     SelectionMode="Extended"
+                     KeyDown="OnSearchResultsKeyDown"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Selected" 
+                                 InputGestureText="Enter"
+                                 Click="OnAddSelectedClick">
+                            <MenuItem.Icon>
+                                <TextBlock Text="+" FontWeight="Bold"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Add All Results" 
+                                 InputGestureText="Ctrl+A"
+                                 Click="OnAddAllClick">
+                            <MenuItem.Icon>
+                                <TextBlock Text="*" FontWeight="Bold"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+        </Grid>
+
+        <!-- Common color annotations -->
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,20">
+            <TextBlock Text="Common colors:" Margin="0,0,0,5"/>
+            <WrapPanel>
+                <GroupBox Header="Item Rarity" Margin="0,0,10,5" Padding="5">
+                    <WrapPanel>
+                        <Button Content="Unique" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#AF6025" Foreground="White"/>
+                        <Button Content="Rare" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#FFFF77"/>
+                        <Button Content="Magic" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#8888FF" Foreground="White"/>
+                    </WrapPanel>
+                </GroupBox>
+
+                <GroupBox Header="Elements" Margin="0,0,10,5" Padding="5">
+                    <WrapPanel>
+                        <Button Content="Fire" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#960000" Foreground="White"/>
+                        <Button Content="Cold" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#366492" Foreground="White"/>
+                        <Button Content="Lightning" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#FFD700"/>
+                        <Button Content="Chaos" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#D02090" Foreground="White"/>
+                    </WrapPanel>
+                </GroupBox>
+
+                <GroupBox Header="Item Types" Margin="0,0,10,5" Padding="5">
+                    <WrapPanel>
+                        <Button Content="Currency" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#AA9E82" Foreground="White"/>
+                        <Button Content="Gem" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#1BA29B" Foreground="White"/>
+                        <Button Content="Quest" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#4AE63A"/>
+                    </WrapPanel>
+                </GroupBox>
+
+                <GroupBox Header="Special States" Margin="0,0,10,5" Padding="5">
+                    <WrapPanel>
+                        <Button Content="Corrupted" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#D20000" Foreground="White"/>
+                        <Button Content="Crafted" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#B8DAF2"/>
+                        <Button Content="Fractured" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#A29162" Foreground="White"/>
+                        <Button Content="Enchanted" Padding="6,2" Margin="2" Click="OnCommonAnnotationClick" Background="#B8DAF2"/>
+                    </WrapPanel>
+                </GroupBox>
+            </WrapPanel>
+        </StackPanel>
+
+        <!-- Action buttons -->
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Save" Click="OnSaveClick" Width="70" Style="{StaticResource {x:Type Button}}"/>
+            <Button Content="Exit" Click="OnExitClick" Width="70" Margin="10,0,0,0" 
+                    Background="#757575" Style="{StaticResource {x:Type Button}}"/>
+        </StackPanel>
+    </Grid>
+</Window>

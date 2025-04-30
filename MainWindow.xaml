@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PoeFixer"
         mc:Ignorable="d"
-        Title="PoeFixer" Height="800" Width="1000" Icon="/cigar.ico"
+        Title="PoeFixer" Height="440" Width="1000" Icon="/cigar.ico"
         Background="#F5F5F5"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="Height">
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,2"/>
             <Setter Property="Background" Value="#2196F3"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -22,11 +23,11 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="CheckBox">
-            <Setter Property="Margin" Value="0,5"/>
-            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Padding" Value="5,1"/>
         </Style>
         <Style TargetType="MenuItem">
-            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Padding" Value="5,2"/>
         </Style>
         <Style TargetType="GroupBox">
             <Setter Property="Background" Value="White"/>
@@ -34,7 +35,7 @@
         </Style>
     </Window.Resources>
 
-    <DockPanel x:Name="mainGrid">
+    <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top" Background="#F5F5F5">
             <MenuItem Header="_File">
                 <MenuItem Header="_Select GGPK" Click="SelectGGPK"/>
@@ -47,24 +48,25 @@
             </MenuItem>
         </Menu>
 
-        <Grid>
+        <!-- Main Content -->
+        <Grid x:Name="mainContent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!-- Game Settings -->
-            <StackPanel Grid.Row="0" Margin="20,10">
-                <TextBlock Text="Game Settings" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,15"/>
+            <StackPanel x:Name="settingsPanel" Grid.Row="0" Margin="10,5,10,0">
+                <TextBlock Text="Game Settings" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
                 
-                <UniformGrid Columns="3" Margin="0,0,0,20">
-                    <GroupBox Header="Camera" Padding="15" Margin="5">
+                <UniformGrid Columns="3" Margin="0,0,0,10">
+                    <GroupBox Header="Camera" Padding="10" Margin="5">
                         <StackPanel>
                             <DockPanel>
                                 <CheckBox x:Name="zoomEnabled" Content="Zoom" VerticalAlignment="Center"/>
                                 <Slider x:Name="zoomSlider" 
-                                        Margin="10,0" 
-                                        Width="150"
+                                        Margin="5,0" 
+                                        Width="120"
                                         Maximum="3" 
                                         Minimum="1" 
                                         TickPlacement="BottomRight"
@@ -79,10 +81,13 @@
                         </StackPanel>
                     </GroupBox>
 
-                    <GroupBox Header="Visual Effects" Padding="15" Margin="5">
+                    <GroupBox Header="Visual Effects" Padding="10" Margin="5">
                         <StackPanel>
                             <CheckBox x:Name="removeShadows" Content="Remove Sun Shadows"/>
-                            <CheckBox x:Name="colorModsEnabled" Content="Color Mods"/>
+                            <DockPanel>
+                                <CheckBox x:Name="colorModsEnabled" Content="Color Mods"/>
+                                <Button Content="..." Click="OnEditColorMods" Padding="2,1" Margin="5,0,0,0" Width="20" Height="20"/>
+                            </DockPanel>
                             <CheckBox x:Name="removeParticles" Content="Remove Particles"/>
                             <CheckBox x:Name="removeLight" Content="Remove Lights"/>
                             <CheckBox x:Name="removeBloom" Content="Remove Bloom"/>
@@ -90,7 +95,7 @@
                         </StackPanel>
                     </GroupBox>
 
-                    <GroupBox Header="Gameplay" Padding="15" Margin="5">
+                    <GroupBox Header="Gameplay" Padding="10" Margin="5">
                         <StackPanel>
                             <CheckBox x:Name="revealEnabled" Content="Reveal Map"/>
                             <CheckBox x:Name="removeLoadingScreen" Content="Invisible Loading"/>
@@ -103,22 +108,24 @@
                 </UniformGrid>
             </StackPanel>
 
-            <!-- Console Output -->
-            <DockPanel Grid.Row="1" Margin="20,0,20,20">
-                <TextBlock Text="Console Output" 
-                          FontSize="16" 
-                          FontWeight="SemiBold" 
-                          DockPanel.Dock="Top" 
-                          Margin="0,0,0,10"/>
+            <!-- Status Bar -->
+            <Border Grid.Row="1" 
+                    Background="White" 
+                    BorderBrush="#BDBDBD" 
+                    BorderThickness="0,1,0,0">
                 <TextBox x:Name="Console" 
-                         Background="#E3F2FD"
-                         TextWrapping="Wrap"
-                         IsReadOnly="True"
-                         FontSize="11"
-                         FontFamily="Consolas"
-                         Padding="15"
-                         VerticalScrollBarVisibility="Auto"/>
-            </DockPanel>
+                        IsReadOnly="True"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Foreground="Black"
+                        FontSize="11"
+                        FontFamily="Consolas"
+                        Height="45"
+                        Padding="10,5"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto"
+                        MaxLines="3"/>
+            </Border>
         </Grid>
     </DockPanel>
 </Window>

@@ -11,6 +11,37 @@ A modernized UI version of [SneedSmoother](https://github.com/glutzer/SneedSmoot
 - Visual effects customization
 - Gameplay modifications
 
+## Recent Updates
+
+### UI Improvements
+1. Color Mod Editor
+   - Added search functionality for mod descriptions
+   - Multi-select support with keyboard shortcuts
+   - Context menu for adding/removing items
+   - Status notifications for actions
+   - Unsaved changes tracking
+   - Auto-sizing window
+
+2. Main Window
+   - More compact layout
+   - Reduced window height
+   - Streamlined settings panel
+   - Status bar for console output (3 lines)
+   - Improved spacing and margins
+
+### Keyboard Shortcuts
+- **Color Mod Editor**
+  - Enter: Add selected items
+  - Ctrl+A: Select all items
+  - Delete: Remove selected items
+  - Ctrl+S: Save changes
+
+### Technical Changes
+- Improved error handling
+- Better memory management
+- More efficient UI updates
+- Enhanced status feedback
+
 ## Changes from Original SneedSmoother
 
 ### UI Modernization
@@ -41,6 +72,18 @@ A modernized UI version of [SneedSmoother](https://github.com/glutzer/SneedSmoot
 2. Use File > Patch GGPK to apply your settings
 3. Extract or restore vanilla assets as needed
 4. Adjust settings in the various categories as desired
+
+## Building
+
+```bash
+dotnet build
+```
+
+## Running
+
+```bash
+dotnet run
+```
 
 ## Requirements
 

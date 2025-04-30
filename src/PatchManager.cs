@@ -47,7 +47,7 @@ public class PatchManager
     public void CollectSettings()
     {
         // Find every named checkbox in the window.
-        foreach (Control control in window.mainGrid.Children)
+        foreach (Control control in window.settingsPanel.Children)
         {
             if (control is CheckBox checkbox)
             {
