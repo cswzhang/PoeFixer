@@ -2,6 +2,14 @@
 
 A modernized UI version of [SneedSmoother](https://github.com/glutzer/SneedSmoother/), a Path of Exile tool for modifying game assets, particularly UI modifications.
 
+## Screenshots
+
+### Main Window
+![Main Window](images/main-window.png)
+
+### Color Mod Editor
+![Color Mod Editor](images/color-mod-editor.png)
+
 ## Features
 
 - GGPK file handling and patching
