@@ -7,6 +7,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibGGPK3.LibBundledGGPK3" Version="2.5.1" />
+    <PackageReference Include="LibGGPK3.LibBundledGGPK3" Version="2.6.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

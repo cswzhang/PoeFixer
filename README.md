@@ -1,6 +1,23 @@
 # PoeFixer
 
-A modernized UI version of [SneedSmoother](https://github.com/glutzer/SneedSmoother/), a Path of Exile tool for modifying game assets, particularly UI modifications.
+A modified version of [PoeFixer](https://github.com/caltus/PoeFixer), a Path of Exile tool for modifying game assets, particularly UI modifications.
+
+## 使用说明
+
+1. 选择`Content.ggpk`（官方版本）或`_.index.bin`（Steam版本） `File > Select GGPK`
+2. 调整右侧需要的设置，本人目前使用`移除光线阴影`、`改色`、`移除粒子效果`，其中`改色`包括红蓝王祭坛、炸坟、地图反射词缀等，`移除粒子效果`对帧数提升极为明显且不降低原本画质，目前满屏先驱稳定100FPS以上
+3. 使用 `File > Patch GGPK` 应用设置
+
+- （可选）`File > Restore Vanilla Assets` 从本地文件中恢复原始内容
+
+## 本项目修改说明
+
+1. 优化使用逻辑：首次Patch GGPK后在本项目运行目录生成`extractedassets`和`modifiedassets`目录，分别对应原始备份（以供恢复）和修改版本
+2. 游戏更新后，只有GGG对特效的处理和解包的底层逻辑不改，无需等待本项目更新，只有更新完游戏后删除本项目生成的`extractedassets`目录重新运行即可
+
+## 未来开发内容
+
+1. 针对技能特效修改的支持
 
 ## Screenshots
 
@@ -101,4 +118,6 @@ dotnet run
 
 ## Credits
 
-This is a UI modernization of [SneedSmoother](https://github.com/glutzer/SneedSmoother/) by glutzer. All core functionality remains the same, with improvements focused on user interface and experience.
+This is a modified version of [PoeFixer](https://github.com/caltus/PoeFixer). All core functionality remains the same, with improvements focused on user interface and experience.
+
+

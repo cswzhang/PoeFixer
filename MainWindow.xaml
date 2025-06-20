@@ -1,4 +1,4 @@
-<Window x:Class="PoeFixer.MainWindow"
+﻿<Window x:Class="PoeFixer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -41,7 +41,6 @@
                 <MenuItem Header="_Select GGPK" Click="SelectGGPK"/>
                 <MenuItem Header="_Patch GGPK" Click="PatchGGPK"/>
                 <Separator/>
-                <MenuItem Header="_Extract Vanilla Assets" Click="ExtractVanillaAssets"/>
                 <MenuItem Header="_Restore Vanilla Assets" Click="RestoreExtractedAssets"/>
                 <Separator/>
                 <MenuItem Header="E_xit" Click="Window_Closing"/>
@@ -62,7 +61,7 @@
                 <UniformGrid Columns="3" Margin="0,0,0,10">
                     <GroupBox Header="Camera" Padding="10" Margin="5">
                         <StackPanel>
-                            <DockPanel>
+                            <DockPanel x:Name="settingsPanel1">
                                 <CheckBox x:Name="zoomEnabled" Content="Zoom" VerticalAlignment="Center"/>
                                 <Slider x:Name="zoomSlider" 
                                         Margin="5,0" 
@@ -77,31 +76,31 @@
                                         LargeChange="0.2"
                                         IsSnapToTickEnabled="True"/>
                             </DockPanel>
-                            <CheckBox x:Name="removeFog" Content="Remove Fog (From Zoom)"/>
+                            <CheckBox x:Name="removeFog" Content="移除雾气 (From Zoom)"/>
                         </StackPanel>
                     </GroupBox>
 
                     <GroupBox Header="Visual Effects" Padding="10" Margin="5">
-                        <StackPanel>
-                            <CheckBox x:Name="removeShadows" Content="Remove Sun Shadows"/>
-                            <DockPanel>
-                                <CheckBox x:Name="colorModsEnabled" Content="Color Mods"/>
-                                <Button Content="..." Click="OnEditColorMods" Padding="2,1" Margin="5,0,0,0" Width="20" Height="20"/>
-                            </DockPanel>
-                            <CheckBox x:Name="removeParticles" Content="Remove Particles"/>
-                            <CheckBox x:Name="removeLight" Content="Remove Lights"/>
+                        <StackPanel x:Name="settingsPanel2">
+                            <CheckBox x:Name="removeShadows" Content="移除光线阴影"/>
+                            <!-- <DockPanel> -->
+                            <CheckBox x:Name="colorModsEnabled" Content="改色"/>
+                            <Button Content="..." Click="OnEditColorMods" Padding="2,1" Margin="5,0,0,0" Width="20" Height="20"/>
+                            <!-- </DockPanel> -->
+                            <CheckBox x:Name="removeParticles" Content="移除粒子效果"/>
+                            <CheckBox x:Name="removeLight" Content="移除黑暗（包括矿坑）"/>
                             <CheckBox x:Name="removeBloom" Content="Remove Bloom"/>
-                            <CheckBox x:Name="removeDelirium" Content="Remove Delirium"/>
+                            <CheckBox x:Name="removeDelirium" Content="移除迷雾"/>
                         </StackPanel>
                     </GroupBox>
 
                     <GroupBox Header="Gameplay" Padding="10" Margin="5">
-                        <StackPanel>
-                            <CheckBox x:Name="revealEnabled" Content="Reveal Map"/>
-                            <CheckBox x:Name="removeLoadingScreen" Content="Invisible Loading"/>
-                            <CheckBox x:Name="removeCorpses" Content="Remove Corpses"/>
+                        <StackPanel x:Name="settingsPanel3">
+                            <CheckBox x:Name="revealEnabled" Content="揭示小地图"/>
+                            <CheckBox x:Name="removeLoadingScreen" Content="黑屏（脚本用）"/>
+                            <CheckBox x:Name="removeCorpses" Content="移除尸体"/>
                             <CheckBox x:Name="removeShatter" Content="Remove Shatter"/>
-                            <CheckBox x:Name="replaceMtx" Content="Replace Effects"/>
+                            <CheckBox x:Name="replaceMtx" Content="替换技能特效（未开发完成）"/>
                             <CheckBox x:Name="removeGoblins" Content="Remove Goblins"/>
                         </StackPanel>
                     </GroupBox>

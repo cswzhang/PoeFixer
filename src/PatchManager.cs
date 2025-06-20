@@ -3,8 +3,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
+using LibBundle3.Records;
+using SystemExtensions;
 using System.Windows.Controls;
-using System.Windows.Media;
+using System.Windows;
 
 namespace PoeFixer;
 
@@ -47,17 +50,41 @@ public class PatchManager
     public void CollectSettings()
     {
         // Find every named checkbox in the window.
-        foreach (Control control in window.settingsPanel.Children)
+        foreach (Control control in window.settingsPanel1.Children)
         {
             if (control is CheckBox checkbox)
             {
                 bools.Add(checkbox.Name, checkbox.IsChecked == true);
             }
 
-            if (control is Slider slider)
+            // if (control is Slider slider)
+            // {
+            //     floats.Add(slider.Name, (float)slider.Value);
+            // }
+        }
+        foreach (Control control in window.settingsPanel2.Children)
+        {
+            if (control is CheckBox checkbox)
             {
-                floats.Add(slider.Name, (float)slider.Value);
+                bools.Add(checkbox.Name, checkbox.IsChecked == true);
             }
+
+            // if (control is Slider slider)
+            // {
+            //     floats.Add(slider.Name, (float)slider.Value);
+            // }
+        }
+        foreach (Control control in window.settingsPanel3.Children)
+        {
+            if (control is CheckBox checkbox)
+            {
+                bools.Add(checkbox.Name, checkbox.IsChecked == true);
+            }
+
+            // if (control is Slider slider)
+            // {
+            //     floats.Add(slider.Name, (float)slider.Value);
+            // }
         }
     }
 
@@ -87,6 +114,29 @@ public class PatchManager
         Directory.CreateDirectory(ModifiedCachePath);
 
         // Modify files.
+        // Stopwatch stopWatch = new();
+        // stopWatch.Start();
+        // patches.AsParallel().ForAll(patch =>
+        // {
+        //     foreach (string file in patch.FilesToPatch)
+        //     {
+        //         TryModifyFile(file, patch);
+        //     }
+
+        //     foreach (string directory in patch.DirectoriesToPatch)
+        //     {
+        //         string[] extensions = patch.Extension.Split('|');
+
+        //         for (int i = 0; i < extensions.Length; i++)
+        //         {
+        //             ModifyDirectory(directory, extensions[i], patch);
+        //         }
+        //     }
+        //     return;
+        // });
+        // stopWatch.Stop();
+        // window.EmitToConsole($"patched in {(int)stopWatch.Elapsed.TotalMilliseconds}ms.");
+
         foreach (IPatch patch in patches)
         {
             Stopwatch stopWatch = new();
@@ -116,7 +166,7 @@ public class PatchManager
         ZipArchive archive = ZipFile.OpenRead("patch.zip");
         int count = LibBundle3.Index.Replace(index, archive.Entries);
         archive.Dispose();
-        //File.Delete("patch.zip");
+        File.Delete("patch.zip");
         return count;
     }
 
@@ -124,6 +174,11 @@ public class PatchManager
     {
         IEnumerable<string> files = Directory.EnumerateFiles($"{CachePath}{path}", extension, SearchOption.AllDirectories);
 
+        // files.AsParallel().ForAll(f =>
+        // {
+        //     ModifyFile(f, patch);
+        //     return;
+        // });
         foreach (string file in files)
         {
             ModifyFile(file, patch);
@@ -182,5 +237,68 @@ public class PatchManager
 
             patchedFiles.Add(path);
         }
+    }
+
+    public void ExtractEssentialAssets()
+    {
+        Type[] patchTypes = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IPatch))).ToArray();
+
+        // Instantiate every patch, only keep enabled ones.
+        IPatch[] patches = new IPatch[patchTypes.Length];
+        for (int i = 0; i < patchTypes.Length; i++)
+        {
+            patches[i] = (IPatch)Activator.CreateInstance(patchTypes[i])!;
+        }
+
+        // Delete modified file directory.
+        if (Directory.Exists(CachePath))
+        {
+            Directory.Delete(CachePath, true);
+        }
+        Directory.CreateDirectory(CachePath);
+
+        List<string> pathList = [];
+
+        foreach (IPatch patch in patches)
+        {
+            foreach (string file in patch.FilesToPatch)
+            {
+                pathList.Add(file);
+            }
+
+            foreach (string directory in patch.DirectoriesToPatch)
+            {
+                string[] extensions = patch.Extension.Split('|');
+
+                for (int i = 0; i < extensions.Length; i++)
+                {
+                    pathList.Add(directory + extensions[i].Replace("*", @".*?\"));
+                }
+            }
+        }
+
+        foreach (string path in pathList)
+        {
+            ExtractSelectedFiles(path);
+        }
+    }
+
+    public void ExtractSelectedFiles(string path)
+    {
+        List<FileRecord> fileList = [];
+        foreach (var f in index.Files.Values)
+            if (Regex.IsMatch(f.Path, path) || f.Path.Contains(path))
+            {
+                fileList.Add(f);
+            }
+        LibBundle3.Index.ExtractParallel(fileList, (fr, data) =>
+        {
+            path = Path.GetFullPath(Utils.ExpandPath(CachePath.TrimEnd('/', '\\'))) + Path.DirectorySeparatorChar;
+            var p = path + fr.Path;
+            Directory.CreateDirectory(Path.GetDirectoryName(p)!);
+            if (data.HasValue)
+                SystemExtensions.System.IO.File.WriteAllBytes(p, data.Value.Span);
+            return false;
+        });
     }
 }

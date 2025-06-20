@@ -1,8 +1,9 @@
 using LibBundledGGPK3;
+using LibBundle3.Nodes;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Media;
+using System.IO;
 
 namespace PoeFixer;
 
@@ -18,6 +19,12 @@ public partial class MainWindow : Window
     private void Window_Closing(object sender, RoutedEventArgs e)
     {
         Application.Current.Shutdown();
+    }
+
+    private void OnEditColorMods(object sender, RoutedEventArgs e)
+    {
+        var editor = new ColorModEditor("color_mods.json");
+        editor.ShowDialog();
     }
 
     public void EmitToConsole(string line)
@@ -51,33 +58,6 @@ public partial class MainWindow : Window
             int count = manager.RestoreExtractedAssets();
             index.Dispose();
             EmitToConsole($"{count} assets restored.");
-        }
-    }
-
-    private void ExtractVanillaAssets(object sender, RoutedEventArgs e)
-    {
-        if (GGPKPath == null)
-        {
-            EmitToConsole("GGPK is not selected.");
-            return;
-        }
-
-        if (GGPKPath.EndsWith(".ggpk"))
-        {
-            BundledGGPK ggpk = new(GGPKPath);
-            FileExtractor extractor = new(ggpk.Index);
-            int count = extractor.ExtractFiles();
-            ggpk.Dispose();
-            EmitToConsole($"{count} assets extracted.");
-        }
-
-        if (GGPKPath.EndsWith(".bin"))
-        {
-            LibBundle3.Index index = new(GGPKPath);
-            FileExtractor extractor = new(index);
-            int count = extractor.ExtractFiles();
-            index.Dispose();
-            EmitToConsole($"{count} assets extracted.");
         }
     }
 
@@ -120,8 +100,15 @@ public partial class MainWindow : Window
 
         if (GGPKPath.EndsWith(".bin"))
         {
-            LibBundle3.Index index = new(GGPKPath);
+            LibBundle3.Index index = new(GGPKPath, false);
+            int failed = index.ParsePaths();
+            DirectoryNode? root = null;
+            root = index.BuildTree(true);
+
             PatchManager manager = new(index, this);
+            if (!Path.Exists($"{AppDomain.CurrentDomain.BaseDirectory}testextractedassets/"))
+                manager.ExtractEssentialAssets();
+
             int count = manager.Patch();
             index.Dispose();
             EmitToConsole($"{count} assets patched.");
@@ -129,11 +116,5 @@ public partial class MainWindow : Window
 
         sw.Stop();
         EmitToConsole($"GGPK patched in {(int)sw.Elapsed.TotalMilliseconds}ms.");
-    }
-
-    private void OnEditColorMods(object sender, RoutedEventArgs e)
-    {
-        var editor = new ColorModEditor("color_mods.json");
-        editor.ShowDialog();
     }
 }
