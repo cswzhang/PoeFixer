@@ -2,6 +2,8 @@
 
 A modified version of [PoeFixer](https://github.com/caltus/PoeFixer), a Path of Exile tool for modifying game assets, particularly UI modifications.
 
+基于[PoeFixer](https://github.com/caltus/PoeFixer)修改.
+
 ## 使用说明
 
 1. 选择`Content.ggpk`（官方版本）或`_.index.bin`（Steam版本） `File > Select GGPK`

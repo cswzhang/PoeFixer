@@ -88,31 +88,28 @@ public partial class MainWindow : Window
         EmitToConsole("Patching GGPK...");
         Stopwatch sw = new();
         sw.Start();
+        DirectoryNode? root = null;
+        LibBundle3.Index index = null;
+
 
         if (GGPKPath.EndsWith(".ggpk"))
         {
-            BundledGGPK ggpk = new(GGPKPath);
-            PatchManager manager = new(ggpk.Index, this);
-            int count = manager.Patch();
-            ggpk.Dispose();
-            EmitToConsole($"{count} assets patched.");
+            BundledGGPK ggpk = new(GGPKPath, false);
+            index = ggpk.Index;
         }
 
         if (GGPKPath.EndsWith(".bin"))
         {
-            LibBundle3.Index index = new(GGPKPath, false);
+            index = new(GGPKPath, false);
             int failed = index.ParsePaths();
-            DirectoryNode? root = null;
-            root = index.BuildTree(true);
-
-            PatchManager manager = new(index, this);
-            if (!Path.Exists($"{AppDomain.CurrentDomain.BaseDirectory}testextractedassets/"))
-                manager.ExtractEssentialAssets();
-
-            int count = manager.Patch();
-            index.Dispose();
-            EmitToConsole($"{count} assets patched.");
         }
+        PatchManager manager = new(index, this);
+        if (!Path.Exists($"{AppDomain.CurrentDomain.BaseDirectory}testextractedassets/"))
+            manager.ExtractEssentialAssets();
+
+        int count = manager.Patch();
+        index.Dispose();
+        EmitToConsole($"{count} assets patched.");
 
         sw.Stop();
         EmitToConsole($"GGPK patched in {(int)sw.Elapsed.TotalMilliseconds}ms.");
