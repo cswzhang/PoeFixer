@@ -1,4 +1,103 @@
-﻿# If a line does not start with a #, this entire path will be skipped when patching.
+﻿• PROTECT skills, monsters, world bosses, mtx effects and particles with this list.
+• ...by adding the path from Bundles2/metadata.
 
-# Delirium fog.
-metadata\effects\environment\league_affliction
+• to activate a line, just remove # from it.
+• 移除 # 以啟用該行.
+• чтобы активировать строку, просто удалите из нее #.
+
+• Expedition
+metadata/chests
+metadata/effects/spells/monsters_effects/league_expedition/dynamic_marker
+
+• World Bosses
+metadata/effects/spells/monsters_effects/atlasofworldsbosses
+
+• Affliction
+metadata/effects/spells/monsters_effects/league_azmeri/guiding_light
+metadata/effects/spells/monsters_effects/league_azmeri/monster_fx
+metadata/effects/spells/monsters_effects/league_azmeri/resources/affecting_area
+metadata/effects/spells/monsters_effects/league_azmeri/resources/feature_room_dust
+metadata/effects/spells/monsters_effects/league_azmeri/resources/guiding_light
+metadata/effects/spells/monsters_effects/league_azmeri/resources/wisp_doodads
+metadata/monsters/leagueazmeri/guidinglight
+
+• Legion
+metadata/effects/spells/monsters_effects/league_legion/rewardsystem
+metadata/particles/monster_effects/league_legion/rewardsystem
+metadata/particles/monster_effects/league_legion/endgame
+
+• Blight
+metadata/chests/blightchests
+metadata/effects/spells/monsters_effects/league_blight/rewardsystem
+
+• Ultimatum
+metadata/effects/spells/monsters_effects/league_archnemesis
+metadata/effects/spells/monsters_effects/league_ritual/cold_ritual
+metadata/effects/spells/monsters_effects/league_ultimatum/mechanics/fx/arena_limit.pet
+
+• Sanctum
+metadata/terrain/leagues/sanctum
+metadata/effects/environment/league_sanctum
+metadata/effects/spells/monsters_effects/league_sanctum
+metadata/effects/spells/monsters_effects/league_hellscape/mechanics
+
+• to keep bloom (remove #)
+# shaders/bloomgather.hlsl
+
+• to keep delirium fog, remove # from next line
+# metadata/effects/environment/league_affliction
+
+• to keep dead bodies, remove # from next line
+# metadata/monsters/monster.ot
+
+• remove # to disable an option (cam zoom - minimap revealed - minimap color)
+# metadata/characters/character.ot
+# shaders/minimap_visibility_pixel.hlsl
+# shaders/minimap_blending_pixel.hlsl
+
+• to remove visible items drop, add # to metadata/items
+• ,.(can also make some equipped items invisible)
+• to keep full micro visible, remove # from all 3 lines
+metadata/items
+# metadata/effects/microtransactions
+# metadata/effects/microtransactions/pets
+# metadata/pet
+
+• keep delve monsters effects
+metadata/particles/monster_effects/league_delve/general
+
+• keep maven effects
+metadata/effects/spells/monsters_effects/atlasofworldsbosses/maven
+
+• keep drox, the warlord (this is also keeping some sounds) effects
+metadata/effects/spells/monsters_effects/atlasexiles/adjudicator
+# metadata/effects/spells/monsters_effects/atlasexiles/adjudicatormonsters
+metadata/particles/monster_effects/atlasexiles/adjudicator
+metadata/particles/monster_effects/atlasexiles/adjudicatormonsters
+
+• keep guardian of the chimera effects
+metadata/effects/spells/ground_effects/chimera_smoke
+metadata/effects/spells/ground_effects/evil
+metadata/effects/spells/ground_effects_v2/smoke_blind_chimera
+metadata/effects/spells/monsters_effects/atlasofworldsbosses/chimera
+metadata/effects/weather_attachments/act4
+metadata/particles/enviro_effects/act3/blood_temple
+metadata/particles/ground_effects_v2/smoke_blind_chimera
+metadata/particles/monster_effects/atlasofworldsbosses/chimera
+
+• keep sirus, awakener of worlds effects
+metadata/effects/spells/monsters_effects/atlasexiles/orion
+metadata/particles/monster_effects/atlasexiles/orion
+
+• keep prophecy effects
+metadata/effects/environment/eclipse_league
+metadata/effects/environment/tempest_league
+metadata/effects/spells/monsters_effects/prophecy_league
+
+• keep visible deadly ground effects
+metadata/effects/spells/ground_effects/caustic
+metadata/effects/spells/ground_effects_v2/caustic_arrow_ground
+metadata/effects/spells/ground_effects_v2/desecrated
+metadata/effects/spells/ground_effects_v2/desecrated_maligaro
+metadata/effects/spells/ground_effects_v2/desecrated_red
+metadata/effects/spells/ground_effects_v3/caustic

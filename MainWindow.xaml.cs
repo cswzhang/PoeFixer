@@ -104,7 +104,7 @@ public partial class MainWindow : Window
             int failed = index.ParsePaths();
         }
         PatchManager manager = new(index, this);
-        if (!Path.Exists($"{AppDomain.CurrentDomain.BaseDirectory}testextractedassets/"))
+        if (!Path.Exists(manager.CachePath))
             manager.ExtractEssentialAssets();
 
         int count = manager.Patch();

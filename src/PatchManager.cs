@@ -27,6 +27,10 @@ public class PatchManager
 
     public MainWindow window;
 
+    public const string skipFile = "paths_to_skip.txt";
+
+    public List<string> skipPathList = [];
+
     public PatchManager(LibBundle3.Index index, MainWindow window)
     {
         CachePath = $"{AppDomain.CurrentDomain.BaseDirectory}extractedassets/";
@@ -93,6 +97,12 @@ public class PatchManager
     /// </summary>
     public int Patch()
     {
+        foreach (string path in File.ReadAllText(skipFile).Split("\r\n"))
+        {
+            if (path.Length > 0 && path[0] != '•' && path[0] != '#')
+                skipPathList.Add(path);
+        }
+
         // Get every class implementing the IPatch interface.
         Type[] patchTypes = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IPatch))).ToArray();
 
@@ -196,6 +206,8 @@ public class PatchManager
 
     public void ModifyFile(string path, IPatch patch)
     {
+        if (skipPathList.IndexOf(path) >= 0 || skipFile.IndexOf(Path.GetDirectoryName(path)) >= 0)
+            return;
         bool patchModifiedAsset = patchedFiles.Contains(path);
 
         // Grab this file from the modified cache if it was modified already.
