@@ -110,8 +110,10 @@ public partial class MainWindow : Window
         int count = manager.Patch();
         index.Dispose();
         EmitToConsole($"{count} assets patched.");
+        EmitToConsole($"{manager.skipCount} assets skipped.");
 
         sw.Stop();
         EmitToConsole($"GGPK patched in {(int)sw.Elapsed.TotalMilliseconds}ms.");
+
     }
 }

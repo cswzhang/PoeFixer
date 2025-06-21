@@ -25,6 +25,8 @@ public class PatchManager
     public Dictionary<string, bool> bools = [];
     public Dictionary<string, float> floats = [];
 
+    public int skipCount = 0;
+
     public MainWindow window;
 
     public const string skipFile = "paths_to_skip.txt";
@@ -100,7 +102,7 @@ public class PatchManager
         foreach (string path in File.ReadAllText(skipFile).Split("\r\n"))
         {
             if (path.Length > 0 && path[0] != '•' && path[0] != '#')
-                skipPathList.Add(path);
+                skipPathList.Add($"{CachePath}{path}".Replace("/", @"\"));
         }
 
         // Get every class implementing the IPatch interface.
@@ -206,8 +208,11 @@ public class PatchManager
 
     public void ModifyFile(string path, IPatch patch)
     {
-        if (skipPathList.IndexOf(path) >= 0 || skipFile.IndexOf(Path.GetDirectoryName(path)) >= 0)
+        if (skipPathList.IndexOf(path.Replace("/", @"\")) >= 0 || skipPathList.IndexOf(Path.GetDirectoryName(path)) >= 0)
+        {
+            skipCount++;
             return;
+        }
         bool patchModifiedAsset = patchedFiles.Contains(path);
 
         // Grab this file from the modified cache if it was modified already.
