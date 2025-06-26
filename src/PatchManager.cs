@@ -31,7 +31,7 @@ public class PatchManager
 
     public const string skipFile = "paths_to_skip.txt";
 
-    public List<string> skipPathList = [];
+    public HashSet<string> skipPathList = [];
 
     public PatchManager(LibBundle3.Index index, MainWindow window)
     {
@@ -63,10 +63,10 @@ public class PatchManager
                 bools.Add(checkbox.Name, checkbox.IsChecked == true);
             }
 
-            // if (control is Slider slider)
-            // {
-            //     floats.Add(slider.Name, (float)slider.Value);
-            // }
+            if (control is Slider slider)
+            {
+                floats.Add(slider.Name, (float)slider.Value);
+            }
         }
         foreach (Control control in window.settingsPanel2.Children)
         {
@@ -75,10 +75,10 @@ public class PatchManager
                 bools.Add(checkbox.Name, checkbox.IsChecked == true);
             }
 
-            // if (control is Slider slider)
-            // {
-            //     floats.Add(slider.Name, (float)slider.Value);
-            // }
+            if (control is Slider slider)
+            {
+                floats.Add(slider.Name, (float)slider.Value);
+            }
         }
         foreach (Control control in window.settingsPanel3.Children)
         {
@@ -87,10 +87,10 @@ public class PatchManager
                 bools.Add(checkbox.Name, checkbox.IsChecked == true);
             }
 
-            // if (control is Slider slider)
-            // {
-            //     floats.Add(slider.Name, (float)slider.Value);
-            // }
+            if (control is Slider slider)
+            {
+                floats.Add(slider.Name, (float)slider.Value);
+            }
         }
     }
 
@@ -206,9 +206,19 @@ public class PatchManager
         }
     }
 
+    private bool ContainsPath(string path)
+    {
+        foreach (string skipPath in skipPathList)
+        {
+            if (path.Contains(skipPath))
+                return true;
+        }
+        return false;
+    }
+
     public void ModifyFile(string path, IPatch patch)
     {
-        if (skipPathList.IndexOf(path.Replace("/", @"\")) >= 0 || skipPathList.IndexOf(Path.GetDirectoryName(path)) >= 0)
+        if (skipPathList.Contains(path.Replace("/", @"\")) || skipPathList.Contains(Path.GetDirectoryName(path)) || ContainsPath(Path.GetDirectoryName(path)))
         {
             skipCount++;
             return;

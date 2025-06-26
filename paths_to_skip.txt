@@ -1,5 +1,5 @@
-﻿• PROTECT skills, monsters, world bosses, mtx effects and particles with this list.
-• ...by adding the path from Bundles2/metadata.
+﻿• PROTECT your skill effects and any other effects with this list.
+• To keep an effect untouched by PoeSmoother, add the path from Metadata.
 
 • to activate a line, just remove # from it.
 • 移除 # 以啟用該行.

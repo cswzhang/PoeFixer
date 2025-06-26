@@ -14,6 +14,23 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        // Open file dialogue to select either a .ggpk or .bin file.
+        OpenFileDialog dlg = new()
+        {
+            DefaultExt = ".ggpk",
+            Filter = "GGPK Files (*.ggpk, *.index.bin)|*.ggpk;*.index.bin"
+        };
+
+        if (dlg.ShowDialog() == true)
+        {
+            GGPKPath = dlg.FileName;
+            EmitToConsole($"GGPK selected: {GGPKPath}.");
+        }
+        else
+        {
+            Application.Current.Shutdown();
+        }
     }
 
     private void Window_Closing(object sender, RoutedEventArgs e)
@@ -61,21 +78,21 @@ public partial class MainWindow : Window
         }
     }
 
-    private void SelectGGPK(object sender, RoutedEventArgs e)
-    {
-        // Open file dialogue to select either a .ggpk or .bin file.
-        OpenFileDialog dlg = new()
-        {
-            DefaultExt = ".ggpk",
-            Filter = "GGPK Files (*.ggpk, *.bin)|*.ggpk;*.bin"
-        };
+    // private void SelectGGPK(object sender, RoutedEventArgs e)
+    // {
+    //     // Open file dialogue to select either a .ggpk or .bin file.
+    //     OpenFileDialog dlg = new()
+    //     {
+    //         DefaultExt = ".ggpk",
+    //         Filter = "GGPK Files (*.ggpk, *.bin)|*.ggpk;*.bin"
+    //     };
 
-        if (dlg.ShowDialog() == true)
-        {
-            GGPKPath = dlg.FileName;
-            EmitToConsole($"GGPK selected: {GGPKPath}.");
-        }
-    }
+    //     if (dlg.ShowDialog() == true)
+    //     {
+    //         GGPKPath = dlg.FileName;
+    //         EmitToConsole($"GGPK selected: {GGPKPath}.");
+    //     }
+    // }
 
     private void PatchGGPK(object sender, RoutedEventArgs e)
     {
@@ -88,7 +105,6 @@ public partial class MainWindow : Window
         EmitToConsole("Patching GGPK...");
         Stopwatch sw = new();
         sw.Start();
-        DirectoryNode? root = null;
         LibBundle3.Index index = null;
 
 
@@ -98,10 +114,11 @@ public partial class MainWindow : Window
             index = ggpk.Index;
         }
 
-        if (GGPKPath.EndsWith(".bin"))
+        // if (GGPKPath.EndsWith(".bin"))
+        else
         {
             index = new(GGPKPath, false);
-            int failed = index.ParsePaths();
+            index.ParsePaths();
         }
         PatchManager manager = new(index, this);
         if (!Path.Exists(manager.CachePath))
