@@ -210,7 +210,7 @@ public class PatchManager
     {
         foreach (string skipPath in skipPathList)
         {
-            if (path.Contains(skipPath))
+            if (path.IndexOf(skipPath) >= 0)
                 return true;
         }
         return false;
@@ -218,7 +218,7 @@ public class PatchManager
 
     public void ModifyFile(string path, IPatch patch)
     {
-        if (skipPathList.Contains(path.Replace("/", @"\")) || skipPathList.Contains(Path.GetDirectoryName(path)) || ContainsPath(Path.GetDirectoryName(path)))
+        if (skipPathList.Contains(path.Replace("/", @"\")) || skipPathList.Contains(Path.GetDirectoryName(path)) || ContainsPath(path.Replace("/", @"\")))
         {
             skipCount++;
             return;
