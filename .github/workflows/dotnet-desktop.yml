@@ -44,6 +44,11 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  AZURE_WEBAPP_NAME: PoeFixer
+  AZURE_WEBAPP_PACKAGE_PATH: '.' # Set this to the path to your web app project, defaults to the repository root:
+  DOTNET_VERSION: '8.0.411' # The .NET SDK version to use
+
 jobs:
 
   build:
@@ -55,32 +60,19 @@ jobs:
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
-    env:
-      Solution_Name: PoeFixer.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
       with:
-        fetch-depth: 0
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    # Install the .NET Core workload
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+    - name: Install dependencies
+      run: dotnet restore
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2
+    - name: Build
+      run: |
+        cd DotNet.WebApp
+        dotnet build --configuration Release --no-restore
+        dotnet publish
 
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-        
-    - name: Dotnet Publish
-    # You may pin to the exact commit or the version.
-    # uses: EasyDesk/action-dotnet-publish@75033960a28daa2ea89e0c1d8a04754568996506
-      uses: EasyDesk/action-dotnet-publish@v1.0.0
